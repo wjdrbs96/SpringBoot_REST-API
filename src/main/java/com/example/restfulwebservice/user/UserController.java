@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
@@ -36,7 +37,7 @@ public class UserController {
  
     // 매게 변수로 Object 타입의 형태로 받기 위해서는 @RequestBody 어노테이션이 필요함
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User createUser = userDaoService.addUser(user);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -46,6 +47,14 @@ public class UserController {
 
         return ResponseEntity.created(location).build();
 
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id) {
+        User user = userDaoService.deleteById(id);
+        if (user == null) {
+            throw new UserNotFoundException(String.format("Id[%s] not found", id));
+        }
     }
 
 }
