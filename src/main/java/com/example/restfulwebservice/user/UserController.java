@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
 @RestController
@@ -24,9 +25,15 @@ public class UserController {
     // String 이어도 Converter 되기 때문에 int id 로 매게변수로 받아도 됨
     @GetMapping("/users/{id}")
     public User retrieveUser(@PathVariable int id) {
-        return userDaoService.findOne(id);
-    }
+        User user = userDaoService.findOne(id);
 
+        if (user == null) {
+            throw new UserNotFoundException(String.format("Id[%s] not found", id));
+        }
+
+        return user;
+    }
+ 
     // 매게 변수로 Object 타입의 형태로 받기 위해서는 @RequestBody 어노테이션이 필요함
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user) {
