@@ -39,7 +39,9 @@ public class AdminUserController {
 
     // GET /users/1 or /users/10 -> 뒤에 붙은 숫자는 int 가 아니라 String 형태임
     // String 이어도 Converter 되기 때문에 int id 로 매게변수로 받아도 됨
-    @GetMapping("/v1/users/{id}")
+    //@GetMapping(value = "/users/{id}/", params = "version=1")
+    //@GetMapping(value = "/users/{id}", headers = "X-API-VERSION=1")
+    @GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv1+json")
     public MappingJacksonValue retrieveUserV1(@PathVariable int id) {
         User user = userDaoService.findOne(id);
 
@@ -58,7 +60,9 @@ public class AdminUserController {
         return mapping;
     }
 
-    @GetMapping("/v2/users/{id}")
+    //@GetMapping(value = "/users/{id}/", params = "version=2")
+    //@GetMapping(value = "/users/{id}", headers = "X-API-VERSION=2")
+    @GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv2+json")
     public MappingJacksonValue retrieveUserV2(@PathVariable int id) {
         User user = userDaoService.findOne(id);
 
