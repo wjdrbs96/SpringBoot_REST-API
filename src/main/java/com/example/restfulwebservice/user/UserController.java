@@ -1,15 +1,19 @@
 package com.example.restfulwebservice.user;
 
 import com.example.restfulwebservice.helloworld.Message;
+import com.example.restfulwebservice.helloworld.StatusEnum;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -58,11 +62,19 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping(value = "/test", produces = "application/json")
-    public ResponseEntity<Message> test() {
-        User user = new User();
-        Message message = new Message("200", "success", user);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+
+    @GetMapping(value = "/test/{id}")
+    public ResponseEntity<Message> findById(@PathVariable int id) {
+        User user = userDaoService.findOne(id);
+        Message message = new Message();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        message.setStatus(StatusEnum.SUCCESS);
+        message.setMessage("성공 코드");
+        message.setData(user);
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{id}")
