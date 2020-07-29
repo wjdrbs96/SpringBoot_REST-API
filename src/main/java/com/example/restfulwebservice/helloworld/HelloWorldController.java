@@ -22,13 +22,12 @@ public class HelloWorldController {
 
     // json 형태로 반환
     @GetMapping(path = "/hello-world-bean/path-variable/{name}")
-    public HelloWorldBean helloWorldBean(@PathVariable String name) {
-        return new HelloWorldBean(String.format("Hello World, %s ", name));
+    public HelloWorldBean helloWorldBean(@PathVariable(value = "name") String lee) {
+        return new HelloWorldBean(String.format("Hello World, %s", lee));
     }
 
     @GetMapping("/hello-world-internationalized")
     public String helloWorldInternationalized(@RequestHeader(name="Accept-Language", required = false) Locale locale) {
         return messageSource.getMessage("greeting.message", null, locale);
     }
-
 }
