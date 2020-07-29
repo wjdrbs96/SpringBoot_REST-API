@@ -70,7 +70,7 @@ public class UserController {
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        message.setStatus(StatusEnum.SUCCESS);
+        message.setStatus(StatusEnum.OK);
         message.setMessage("성공 코드");
         message.setData(user);
 

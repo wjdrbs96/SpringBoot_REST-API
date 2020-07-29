@@ -9,7 +9,7 @@ public class Message {
     private Object data;
 
     public Message() {
-        this.status = StatusEnum.FAIL;
+        this.status = StatusEnum.BAD_REQUEST;
         this.data = null;
         this.message = null;
     }
